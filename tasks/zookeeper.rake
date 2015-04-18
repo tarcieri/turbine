@@ -1,7 +1,7 @@
 require "rake/clean"
 
 def zookeeper_config(data)
-<<-CONFIG
+  <<-CONFIG
 # Zookeeper configuration
 
 # The number of milliseconds of each tick
