@@ -1,4 +1,5 @@
 require "rake/clean"
+require "colorize"
 
 def zookeeper_config(data)
   <<-CONFIG
@@ -27,13 +28,13 @@ namespace :zookeeper do
   directory "tmp"
 
   file "tmp/#{ZK_TARBALL}" => "tmp" do
-    puts "*** Downloading Zookeeper"
+    puts "#{'***'.blue} #{'Downloading Zookeeper'.light_white}"
     url = "https://archive.apache.org/dist/zookeeper/zookeeper-#{ZK_VERSION}/#{ZK_TARBALL}"
     sh "curl #{url} -o tmp/#{ZK_TARBALL}"
   end
 
   task install: :download do
-    puts "*** Unpacking Zookeeper"
+    puts "#{'***'.blue} #{'Unpacking Zookeeper'.light_white}"
 
     rm_rf "zookeeper" if File.exist? "zookeeper"
     sh "tar -zxvf tmp/#{ZK_TARBALL}"
@@ -50,7 +51,7 @@ namespace :zookeeper do
   end
 
   task start: :zookeeper do
-    puts "*** Starting Zookeeper"
+    puts "#{'***'.blue} #{'Starting Zookeeper'.light_white}"
     sh "cd zookeeper && bin/zkServer.sh start"
   end
 end
