@@ -1,4 +1,7 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-# Specify your gem's dependencies in turbine.gemspec
+group :development, :test do
+  gem "rubocop"
+end
+
 gemspec

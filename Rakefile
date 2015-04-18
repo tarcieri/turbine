@@ -1,3 +1,6 @@
 require "bundler/gem_tasks"
 
-task :ci => :spec
+Dir["tasks/**/*.rake"].each { |task| load task }
+
+task default: [:spec, :rubocop]
+task ci:      [:spec, :rubocop]
