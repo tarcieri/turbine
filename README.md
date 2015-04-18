@@ -1,4 +1,4 @@
-Turbine
+![Turbine](https://raw.githubusercontent.com/tarcieri/turbine/master/turbine.png)
 =======
 
 Fault-tolerant multithreaded stream processing for Ruby.
