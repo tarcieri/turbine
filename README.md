@@ -1,6 +1,7 @@
 ![Turbine](https://raw.githubusercontent.com/tarcieri/turbine/master/turbine.png)
 =======
 [![Build Status](https://travis-ci.org/tarcieri/turbine.svg)](https://travis-ci.org/tarcieri/turbine)
+[![Code Climate](https://codeclimate.com/github/tarcieri/turbine/badges/gpa.svg)](https://codeclimate.com/github/tarcieri/turbine)
 
 Fault-tolerant multithreaded stream processing for Ruby.
 
