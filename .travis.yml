@@ -1,5 +1,5 @@
 language: ruby
-script: rake ci
+script: "gem install bundler && rake ci"
 rvm:
   - 2.2.2
   - jruby
