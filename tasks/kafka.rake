@@ -23,7 +23,7 @@ namespace :kafka do
     puts "#{'***'.blue} #{'Unpacking Kafka'.light_white}"
 
     rm_rf "kafka" if File.exist? "kafka"
-    sh "tar -zxvf tmp/#{KAFKA_TARBALL}"
+    sh "tar -zxf tmp/#{KAFKA_TARBALL}"
     mv "kafka_2.10-#{KAFKA_VERSION}", "kafka"
   end
 

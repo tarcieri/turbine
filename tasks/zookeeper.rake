@@ -37,7 +37,7 @@ namespace :zookeeper do
     puts "#{'***'.blue} #{'Unpacking Zookeeper'.light_white}"
 
     rm_rf "zookeeper" if File.exist? "zookeeper"
-    sh "tar -zxvf tmp/#{ZK_TARBALL}"
+    sh "tar -zxf tmp/#{ZK_TARBALL}"
     mv "zookeeper-#{ZK_VERSION}", "zookeeper"
     home = File.expand_path("../../zookeeper", __FILE__)
 
