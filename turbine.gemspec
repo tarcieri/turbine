@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Tony Arcieri"]
   spec.email         = ["bascule@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "Fault-tolerant multithreaded stream processing for Ruby "
+  spec.description   = "Turbine is a performance-oriented stream processor built on Zookeeper"
+  spec.homepage      = "https://github.com/tarcieri/turbine"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
