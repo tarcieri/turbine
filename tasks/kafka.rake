@@ -25,7 +25,6 @@ namespace :kafka do
     rm_rf "kafka" if File.exist? "kafka"
     sh "tar -zxvf tmp/#{KAFKA_TARBALL}"
     mv "kafka_2.10-#{KAFKA_VERSION}", "kafka"
-    home = File.expand_path("../../kafka", __FILE__)
   end
 
   task start: %w(kafka zookeeper:start) do
