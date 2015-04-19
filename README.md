@@ -37,7 +37,10 @@ using the poseidon gem.
 To create a new Kafka consumer for a topic, do the following:
 
 ```ruby
-consumer  = Turbine::Consumer::Kafka.new("my_test_consumer", "localhost", 9092, "topic1", 0, :earliest_offset)
+consumer = Turbine::Consumer::Kafka.new(
+  "my_test_consumer", "localhost", 9092,
+  "topic1", 0, :earliest_offset)
+
 processor = Turbine::Processor.new(min_threads: 5, max_threads: 5, max_queue: 0)
 
 processor.process(consumer) do |msg|
