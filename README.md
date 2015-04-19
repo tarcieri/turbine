@@ -41,7 +41,7 @@ consumer = Turbine::Consumer::Kafka.new(
   "my_test_consumer", "localhost", 9092,
   "topic1", 0, :earliest_offset)
 
-processor = Turbine::Processor.new(min_threads: 5, max_threads: 5, max_queue: 0)
+processor = Turbine::Processor.new(min_threads: 5, max_threads: 5, max_queue: 1000)
 
 processor.process(consumer) do |msg|
    ...
