@@ -21,7 +21,7 @@ RSpec.describe Turbine::Batch do
       expect(batch).to_not be_completed
 
       threads = []
-      0.upto(thread_count) do |n|
+      (0..thread_count).sort_by { rand }.each do |n|
         threads << Thread.new { batch.complete(n) }
       end
       threads.each(&:join)
