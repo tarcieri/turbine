@@ -18,7 +18,7 @@ from a job queue by design. Turbine is designed to be small, simple, and fast.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'turbine'
+gem "turbine"
 ```
 
 And then execute:
