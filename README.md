@@ -52,7 +52,7 @@ end
 
 Turbine checkpoints progress as batches of messages in the stream are processed. There are two checkpointing backends available: local files and Zookeeper.
 
-No method is provided to reschedule work checkpointed in Zookeeper, although that'd be a pretty cool feature! PRs accepted!
+No method is provided to shift work checkpointed in Zookeeper from a failed node to a replacement one, although that'd be a pretty cool feature! PRs accepted!
 
 Turbine automatically reschedules processing of messages in the stream in the event of faults or rebalancing of resources. Because of this, the same message may be received multiple times. Stream processing jobs written in Turbine MUST account for this.
 
