@@ -2,6 +2,6 @@ language: ruby
 install: gem install bundler
 script: "bundle && bundle exec rake ci"
 rvm:
-  - 2.2.2
+  - 2.2
   - jruby
   - jruby-head
