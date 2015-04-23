@@ -48,6 +48,21 @@ processor.process(consumer) do |msg|
 end
 ```
 
+## Semantics
+
+Turbine checkpoints progress as batches of messages in the stream are processed. There are two checkpointing backends available: local files and Zookeeper.
+
+No method is provided to reschedule work checkpointed in Zookeeper, although that'd be a pretty cool feature! PRs accepted!
+
+Turbine automatically reschedules processing of messages in the stream in the event of faults or rebalancing of resources. Because of this, the same message may be received multiple times. Stream processing jobs written in Turbine MUST account for this.
+
+An example of where things could go wrong is a "counter" job. Imagine we look for a particular event and increment a counter in statsd/memcached/redis. This will not give accurate numbers, because message replays will spuriously increment the counter.
+
+The contract of Turbine is as follows:
+
+* Turbine messages are guaranteed to be delivered AT LEAST once but Turbine MAY replay the same message many times
+* Because of this, stream processing jobs written in Turbine MUST be idempotent (i.e. repeat processing of the same message is gracefully tolerated)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
