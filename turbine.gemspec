@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "poseidon"
   spec.add_runtime_dependency "zk"
   spec.add_runtime_dependency "concurrent-ruby"
+  spec.add_runtime_dependency "thread_safe"
 
   spec.add_development_dependency "bundler", "~> 1.9"
   spec.add_development_dependency "rake", "~> 10.0"
