@@ -2,6 +2,7 @@ require "thread_safe"
 require "forwardable"
 
 module Turbine
+  # Batches of messages to be processed
   class Batch
     extend Forwardable
 
@@ -14,8 +15,8 @@ module Turbine
     end
 
     def complete(n)
-      raise ArgumentError, "index out of bounds" if n < 0 || n >= @completed.size
-      @completed[n] = true      
+      fail ArgumentError, "index out of bounds" if n < 0 || n >= @completed.size
+      @completed[n] = true
     end
 
     def completed?
