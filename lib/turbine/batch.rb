@@ -25,7 +25,7 @@ module Turbine
 
     def inspect
       elements = @batch.zip(@completed).map do |elem, done|
-        "#{elem.inspect}:#{done ? "completed" : "pending"}"
+        "#{elem.inspect}:#{done ? 'completed' : 'pending'}"
       end.join(", ")
 
       to_s.sub(/>\z/, " #{elements}>")
