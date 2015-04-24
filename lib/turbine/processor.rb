@@ -19,9 +19,7 @@ module Turbine
           begin
             @pool.post { process_message(batch, index, &block) }
           rescue Concurrent::RejectedExecutionError
-            # We exceeded the pool's queue, so busy-wait and retry
-            # TODO: more intelligent busy-waiting strategy
-            sleep BUSY_WAIT_INTERVAL
+            busy_wait
             retry
           end
         end
@@ -44,6 +42,12 @@ module Turbine
       end
 
       batch.complete(index)
+    end
+
+    def busy_wait
+      # We exceeded the pool's queue, so busy-wait and retry
+      # TODO: more intelligent busy-waiting strategy
+      sleep BUSY_WAIT_INTERVAL
     end
   end
 end
