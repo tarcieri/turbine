@@ -18,7 +18,7 @@ RSpec.describe Turbine::Processor do
         max_queue: 100
       )
 
-      processor.process(mock_consumer) do |message|
+      processor.process(mock_consumer) do |_msg|
         # noop!
       end
 
