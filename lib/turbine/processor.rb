@@ -15,7 +15,7 @@ module Turbine
         batch = consumer.fetch
         break unless batch
 
-        0.upto(batch.size - 1) do |index|
+        batch.size.times do |index|
           begin
             @pool.post { process_message(batch, index, &block) }
           rescue Concurrent::RejectedExecutionError
