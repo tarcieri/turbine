@@ -11,8 +11,8 @@ RSpec.describe Turbine::Batch do
     end
   end
 
-  it "defaults to all job completions being false" do
-    expect(example_batch.completed.all? { |x| x == false }).to eq true
+  it "defaults to being incomplete" do
+    expect(example_batch.completed?).to be false
   end
 
   it "marks completions in a thread-safe manner" do
