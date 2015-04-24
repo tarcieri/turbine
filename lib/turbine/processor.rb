@@ -3,6 +3,9 @@ require "concurrent"
 module Turbine
   # Multithreaded message processor
   class Processor
+    # How long to sleep when busy waiting for the queue to empty
+    BUSY_WAIT_INTERVAL = 0.0001
+
     def initialize(*args)
       @pool = Concurrent::ThreadPoolExecutor.new(*args)
     end
@@ -18,7 +21,7 @@ module Turbine
           rescue Concurrent::RejectedExecutionError
             # We exceeded the pool's queue, so busy-wait and retry
             # TODO: more intelligent busy-waiting strategy
-            sleep 0.0001
+            sleep BUSY_WAIT_INTERVAL
             retry
           end
         end
