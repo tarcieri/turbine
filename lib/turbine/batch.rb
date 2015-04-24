@@ -6,7 +6,7 @@ module Turbine
   class Batch
     extend Forwardable
 
-    def_delegators :@batch, :[]
+    def_delegators :@batch, :[], :size
     attr_reader :completed
 
     def initialize(*elements)
