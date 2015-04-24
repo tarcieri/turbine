@@ -29,4 +29,8 @@ RSpec.describe Turbine::Batch do
       expect(batch).to be_completed
     end
   end
+
+  it "inspects" do
+    expect(example_batch.inspect).to include described_class.to_s
+  end
 end
