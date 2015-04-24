@@ -5,7 +5,3 @@ rvm:
   - 2.2.2
   - jruby
   - jruby-head
-
-matrix:
-  allow_failures:
-    - rvm: 2.2.2

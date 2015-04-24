@@ -19,6 +19,7 @@ module Turbine
             # We exceeded the pool's queue, so busy-wait and retry
             # TODO: more intelligent busy-waiting strategy
             sleep 0.0001
+            retry
           end
         end
       end
