@@ -22,7 +22,7 @@ RSpec.describe Turbine::Processor do
 
   context "message processing" do
     MIN_THREAD_COUNT.upto(MAX_THREAD_COUNT) do |thread_count|
-      it "processes batches of messages with #{thread_count} thread(s)" do
+      it "processes batches of messages with #{thread_count} threads" do
         processor = described_class.new(
           min_threads: thread_count,
           max_threads: thread_count,
