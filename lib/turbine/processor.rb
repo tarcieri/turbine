@@ -12,16 +12,14 @@ module Turbine
 
     def process(consumer, &block)
       fail ArgumentError, "no block given" unless block
-      processor_method = method(:process_message)
+      processor_method = method(:process_batch)
 
       while (batch = consumer.fetch)
-        for index in 0...batch.size
-          begin
-            @pool.post(batch, index, block, &processor_method)
-          rescue Concurrent::RejectedExecutionError
-            busy_wait
-            retry
-          end
+        begin
+          @pool.post(batch, block, &processor_method)
+        rescue Concurrent::RejectedExecutionError
+          busy_wait
+          retry
         end
       end
     end
@@ -33,15 +31,17 @@ module Turbine
 
     private
 
-    def process_message(batch, index, block)
-      begin
-        block.call batch[index]
-      rescue => ex
-        # TODO: handle exceptions or something!
-        puts "#{ex.class} #{ex}\n#{ex.backtrace.join("\n")}"
+    def process_batch(batch, block)
+      for index in (0...batch.size)
+        begin
+          block.call(batch[index])
+        rescue => ex
+          # TODO: handle exceptions or something!
+          puts "#{ex.class} #{ex}\n#{ex.backtrace.join("\n")}"
+        end
       end
 
-      batch.complete(index)
+      batch.complete
     end
 
     def busy_wait

@@ -1,9 +1,9 @@
 require "spec_helper"
 
 RSpec.describe Turbine::Batch do
-  let(:example_elements) { (0...max_thread_count).to_a }
-  let(:example_batch)    { described_class.new(*example_elements) }
-  let(:max_thread_count) { 100 }
+  let(:example_batch_size) { 13 }
+  let(:example_elements)   { (0...13).to_a }
+  let(:example_batch)      { described_class.new(example_elements) }
 
   it "creates batches from arrays" do
     example_elements.size.times do |n|
@@ -11,23 +11,17 @@ RSpec.describe Turbine::Batch do
     end
   end
 
-  it "defaults to being incomplete" do
-    expect(example_batch.completed?).to be false
+  it "knows its size" do
+    expect(example_batch.size).to eq example_batch_size
   end
 
-  it "marks completions in a thread-safe manner" do
-    1.upto(max_thread_count) do |thread_count|
-      batch = described_class.new(*(0..thread_count).to_a)
-      expect(batch).to_not be_completed
+  it "begins incomplete" do
+    expect(example_batch).not_to be_completed
+  end
 
-      threads = []
-      (0..thread_count).sort_by { rand }.each do |n|
-        threads << Thread.new { batch.complete(n) }
-      end
-      threads.each(&:join)
-
-      expect(batch).to be_completed
-    end
+  it "can be completed" do
+    example_batch.complete
+    expect(example_batch).to be_completed
   end
 
   it "inspects" do
