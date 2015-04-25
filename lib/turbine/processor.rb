@@ -1,5 +1,3 @@
-require "concurrent"
-
 module Turbine
   # Multithreaded message processor
   class Processor

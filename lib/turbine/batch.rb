@@ -3,15 +3,15 @@ module Turbine
   class Batch
     def initialize(elements)
       @batch     = elements.freeze
-      @completed = false
+      @completed = Concurrent::AtomicBoolean.new
     end
 
     def complete
-      @completed = true
+      @completed.value = true
     end
 
     def completed?
-      @completed
+      @completed.value
     end
 
     def [](n)

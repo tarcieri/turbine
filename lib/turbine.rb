@@ -1,5 +1,7 @@
 require "turbine/version"
 
+require "concurrent"
+
 require "turbine/batch"
 require "turbine/processor"
 
