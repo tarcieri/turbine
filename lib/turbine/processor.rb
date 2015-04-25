@@ -6,6 +6,7 @@ module Turbine
 
     def initialize(*args)
       @pool = Concurrent::ThreadPoolExecutor.new(*args)
+      @completed_count = Concurrent::AtomicFixnum.new
     end
 
     def process(consumer, &block)
@@ -27,6 +28,10 @@ module Turbine
       @pool.wait_for_termination(timeout)
     end
 
+    def completed_count
+      @completed_count.value
+    end
+
     private
 
     def process_batch(batch, block)
@@ -37,6 +42,8 @@ module Turbine
           # TODO: handle exceptions or something!
           puts "#{ex.class} #{ex}\n#{ex.backtrace.join("\n")}"
         end
+
+        @completed_count.increment
       end
 
       batch.complete
