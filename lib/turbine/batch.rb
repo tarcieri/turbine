@@ -5,20 +5,28 @@ module Turbine
   class Batch
     extend Forwardable
 
-    def_delegators :@batch, :[], :size
+    def_delegators :@batch, :size
 
     def initialize(*elements)
       @batch     = elements.clone.freeze
       @completed = Array.new(elements.size).fill { Concurrent::AtomicBoolean.new }.freeze
     end
 
+    def [](n)
+      @batch.at(n)
+    end
+
     def complete(n)
       fail ArgumentError, "index out of bounds" if n < 0 || n >= @completed.size
-      @completed[n].value = true
+      @completed.at(n).value = true
     end
 
     def completed?
-      @completed.all? { |element| element.value == true }
+      for index in 0...@completed.length
+        return false if @completed.at(index).value == false
+      end
+
+      true
     end
 
     def inspect

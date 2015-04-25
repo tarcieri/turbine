@@ -4,6 +4,9 @@ LineLength:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
+Style/For:
+  Enabled: false # for: For speed!
+
 Metrics/MethodLength:
   CountComments: false
   Max: 15
