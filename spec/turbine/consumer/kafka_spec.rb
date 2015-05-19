@@ -45,8 +45,8 @@ RSpec.describe Turbine::Consumer::Kafka do
         end
       end
 
-      rate = "#{'%.2f' % (count / rt)} msg/sec)"
-      STDERR.puts("*** Performance: #{count} messages in #{'%.2f' % rt} seconds (#{rate})")
+      rate = "#{format('%.2f', count / rt)} msg/sec)"
+      STDERR.puts("*** Performance: #{count} messages in #{format('%.2f', rt)} seconds (#{rate})")
     end
 
     expect(count).to eq MESSAGE_COUNT
