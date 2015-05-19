@@ -1,0 +1,48 @@
+require "spec_helper"
+require "turbine/consumer/kafka"
+require "turbine/rspec/kafka_helper"
+
+RSpec.describe Turbine::Consumer::Kafka do
+  MESSAGE_COUNT = 100_000
+
+  let(:example_topic) { @example_topic }
+
+  def with_consumer
+    consumer = described_class.new(
+      "my_test_consumer",
+      "localhost", 9092,
+      example_topic, 0,
+      :earliest_offset
+    )
+
+    begin
+      yield consumer
+    ensure
+      consumer.close
+    end
+  end
+
+  before :all do
+    timestamp = Time.now.strftime("%Y%m%d%H%M%S%L")
+
+    @example_topic = "turbike-kafka-specs-#{timestamp}"
+    KafkaHelper.create_topic(@example_topic)
+    KafkaHelper.fill_topic(@example_topic, MESSAGE_COUNT)
+  end
+
+  after :all do
+    KafkaHelper.delete_topic(@example_topic)
+  end
+
+  it "fetches batches of messages" do
+    count = 0
+    with_consumer do |consumer|
+      while count < MESSAGE_COUNT
+        messages = consumer.fetch
+        count += messages.size
+      end
+    end
+
+    expect(count).to eq MESSAGE_COUNT
+  end
+end

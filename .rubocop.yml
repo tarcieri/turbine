@@ -7,6 +7,9 @@ Style/StringLiterals:
 Style/For:
   Enabled: false # for: For speed!
 
+Style/ModuleFunction:
+  Enabled: false
+
 Metrics/MethodLength:
   CountComments: false
   Max: 15
