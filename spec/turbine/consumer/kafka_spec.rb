@@ -1,6 +1,7 @@
 require "spec_helper"
 require "turbine/consumer/kafka"
 require "turbine/rspec/kafka_helper"
+require "benchmark"
 
 RSpec.describe Turbine::Consumer::Kafka do
   MESSAGE_COUNT = 100_000
@@ -37,10 +38,15 @@ RSpec.describe Turbine::Consumer::Kafka do
   it "fetches batches of messages" do
     count = 0
     with_consumer do |consumer|
-      while count < MESSAGE_COUNT
-        messages = consumer.fetch
-        count += messages.size
+      rt = Benchmark.realtime do
+        while count < MESSAGE_COUNT
+          messages = consumer.fetch
+          count += messages.size
+        end
       end
+
+      rate = "#{'%.2f' % (count / rt)} msg/sec)"
+      STDERR.puts("*** Performance: #{count} messages in #{'%.2f' % rt} seconds (#{rate})")
     end
 
     expect(count).to eq MESSAGE_COUNT

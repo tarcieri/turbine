@@ -9,13 +9,13 @@ module KafkaHelper
   KAFKA_ADDR     = "localhost:9092"
 
   def delete_topic(topic)
-    STDERR.puts("*** Deleting Kafka topic: #{topic}")
+    log "*** Deleting Kafka topic: #{topic}"
 
     topic_command :delete, topic: topic
   end
 
   def create_topic(topic)
-    STDERR.puts("*** Creating Kafka topic: #{topic}")
+    log "*** Creating Kafka topic: #{topic}"
 
     required_topic_command :create,
                            "replication-factor" => 1,
@@ -36,7 +36,7 @@ module KafkaHelper
 
     producer = Poseidon::Producer.new([KAFKA_ADDR], "my_test_producer", type: :sync)
 
-    STDERR.puts("*** Filling topic with #{n} messages: #{topic}")
+    log "*** Filling topic with #{n} messages: #{topic}"
 
     (n / 1000).times do |i|
       messages = []
@@ -77,5 +77,9 @@ module KafkaHelper
     result = topic_command(command, args)
     fail "Kafka command failed!" unless result
     true
+  end
+
+  def log(message)
+    STDERR.puts(message)
   end
 end
