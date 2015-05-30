@@ -1,15 +1,21 @@
-require "poseidon"
+require "poseidon_cluster"
 
 module Turbine
   module Consumer
     # Turbine consumer for the Kafka message queue
     class Kafka
       def initialize(*args)
-        @consumer = Poseidon::PartitionConsumer.new(*args)
+        @consumer = Poseidon::ConsumerGroup.new(*args)
       end
 
       def fetch
-        Batch.new(@consumer.fetch)
+        batch = nil
+
+        @consumer.fetch commit: false do |_partition, messages|
+          batch = Batch.new(messages)
+        end
+
+        batch
       end
 
       def close

@@ -10,10 +10,10 @@ RSpec.describe Turbine::Consumer::Kafka do
 
   def with_consumer
     consumer = described_class.new(
-      "my_test_consumer",
-      "localhost", 9092,
-      example_topic, 0,
-      :earliest_offset
+      "my-consumer-group",
+      ["localhost:9092"],
+      ["localhost:2181"],
+      example_topic
     )
 
     begin

@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "poseidon"
   spec.add_runtime_dependency "zk"
+  spec.add_runtime_dependency "poseidon_cluster"
   spec.add_runtime_dependency "concurrent-ruby"
 
   spec.add_development_dependency "bundler", "~> 1.9"

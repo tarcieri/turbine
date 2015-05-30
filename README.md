@@ -32,7 +32,8 @@ Or install it yourself as:
 ## Usage
 
 Turbine presently supports stream processing from the Kafka message queue
-using the poseidon gem.
+using the [poseidon_cluster](https://github.com/bsm/poseidon_cluster) gem,
+which implements self-rebalancing Consumer Groups.
 
 To create a new Kafka consumer for a topic, do the following:
 
@@ -41,8 +42,11 @@ require "turbine"
 require "turbine/consumer/kafka"
 
 consumer = Turbine::Consumer::Kafka.new(
-  "my_test_consumer", "localhost", 9092,
-  "topic1", 0, :earliest_offset)
+  "my-group",                               # Group name
+  ["kafka1.host:9092", "kafka2.host:9092"], # Kafka brokers
+  ["zk1.host:2181",    "zk2.host:2181"],    # Zookeeper hosts
+  "my-topic"                                # Topic name
+)
 
 processor = Turbine::Processor.new(min_threads: 5, max_threads: 5, max_queue: 1000)
 
@@ -52,12 +56,6 @@ end
 ```
 
 ## Semantics
-
-Turbine checkpoints progress as batches of messages in the stream are processed. There are two checkpointing backends available: local files and Zookeeper.
-
-Turbine attempts to implement [COVR (Composable Output-Valid Resilient Messaging)](http://www.hpl.hp.com/techreports/2014/HPL-2014-14.html) semantics, where nodes are individually responsible for checkpointing work as they process it, but only checkpoint after messages have been processed.
-
-No method is provided to shift work checkpointed in Zookeeper from a failed node to a replacement one, although that'd be a pretty cool feature! PRs accepted!
 
 Turbine automatically reschedules processing of messages in the stream in the event of faults or rebalancing of resources. Because of this, the same message may be received multiple times. Stream processing jobs written in Turbine MUST account for this.
 
