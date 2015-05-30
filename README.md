@@ -59,7 +59,27 @@ processor.process(consumer) do |msg|
 end
 ```
 
-## Semantics
+## Error handling
+
+By default, Turbine prints exceptions that occur during message processing to STDERR.
+Chances are, you'd probably rather log them to an exception logging service.
+
+After creating a processor object, you can configure a custom exception handler so
+you can log these exceptions to a more appropriate place than STDERR:
+
+```ruby
+processor = Turbine::Processor.new(min_threads: 5, max_threads: 5, max_queue: 1000)
+
+processor.error_handler do |ex, _msg|
+  MyBugHandler.notify_or_ignore(ex)
+end
+
+processor.process(consumer) do |msg|
+   ...
+end
+```
+
+## Semantics (PLEASE READ)
 
 Turbine automatically reschedules processing of messages in the stream in the event of faults or rebalancing of resources. Because of this, the same message may be received multiple times. Stream processing jobs written in Turbine MUST account for this.
 

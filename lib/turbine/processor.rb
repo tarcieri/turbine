@@ -9,6 +9,9 @@ module Turbine
       @pool = Concurrent::ThreadPoolExecutor.new(*args)
       @completed_count = Concurrent::AtomicFixnum.new
       @pending = []
+      @error_handler = proc do |ex|
+        STDERR.puts "*** Error processing message: #{ex.class} #{ex}\n#{ex.backtrace.join("\n")}"
+      end
     end
 
     def process(consumer, &block)
@@ -48,6 +51,10 @@ module Turbine
       @running.value
     end
 
+    def error_handler(&block)
+      @error_handler = block
+    end
+
     private
 
     def enqueue_batch(batch)
@@ -70,11 +77,12 @@ module Turbine
 
     def process_batch(batch, block)
       for index in (0...batch.size)
+        msg = batch[index]
+
         begin
-          block.call(batch[index])
+          block.call(msg)
         rescue => ex
-          # TODO: handle exceptions or something!
-          puts "#{ex.class} #{ex}\n#{ex.backtrace.join("\n")}"
+          @error_handler.call(ex, msg)
         end
 
         @completed_count.increment

@@ -5,10 +5,11 @@ RSpec.describe Turbine::Processor do
   MAX_THREAD_COUNT = 16
   QUEUE_SIZE       = 100
 
-  let(:example_batch_size)  { 100 }
-  let(:example_elements)    { (0...example_batch_size).to_a }
-  let(:example_partition)   { 0 }
-  let(:example_batch_count) { 1000 }
+  let(:example_batch_size)    { 100 }
+  let(:example_elements)      { (0...example_batch_size).to_a }
+  let(:example_partition)     { 0 }
+  let(:example_batch_count)   { 1000 }
+  let(:example_message_count) { example_batch_size * example_batch_count }
 
   let(:example_batches) do
     Array.new(example_batch_count).fill do
@@ -43,7 +44,33 @@ RSpec.describe Turbine::Processor do
 
     example_processor.drain
 
-    expect(example_processor.completed_count).to eq example_batch_size * example_batch_count
+    expect(example_processor.completed_count).to eq example_message_count
+  end
+
+  it "tolerates processing errors gracefully" do
+    # Check the default handler is printing to STDERR
+    expect(STDERR).to receive(:puts).exactly(example_message_count).times
+
+    example_processor.process(mock_consumer) do |_msg, _ex|
+      fail "uhoh!"
+    end
+
+    example_processor.drain
+  end
+
+  it "supports a custom error handler" do
+    handler_called = false
+
+    example_processor.error_handler do |_ex, _msg|
+      handler_called = true
+    end
+
+    example_processor.process(mock_consumer) do |_ex, _msg|
+      fail "uhoh!"
+    end
+
+    example_processor.drain
+    expect(handler_called).to eq true
   end
 
   context "message processing" do
