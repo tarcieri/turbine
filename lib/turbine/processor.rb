@@ -7,6 +7,7 @@ module Turbine
     def initialize(*args)
       @pool = Concurrent::ThreadPoolExecutor.new(*args)
       @completed_count = Concurrent::AtomicFixnum.new
+      @pending = []
     end
 
     def process(consumer, &block)
@@ -14,12 +15,16 @@ module Turbine
       processor_method = method(:process_batch)
 
       while (batch = consumer.fetch)
+        enqueue_batch(batch)
+
         begin
           @pool.post(batch, block, &processor_method)
         rescue Concurrent::RejectedExecutionError
-          busy_wait
+          busy_wait(consumer)
           retry
         end
+
+        commit_completions(consumer)
       end
     end
 
@@ -33,6 +38,24 @@ module Turbine
     end
 
     private
+
+    def enqueue_batch(batch)
+      partition = @pending[batch.partition] ||= []
+      partition << batch
+    end
+
+    def commit_completions(consumer)
+      for partition in @pending
+        next unless partition
+
+        last_completed_batch = nil
+        while (batch = partition.first) && batch.completed?
+          last_completed_batch = partition.shift
+        end
+
+        consumer.commit(last_completed_batch) if last_completed_batch
+      end
+    end
 
     def process_batch(batch, block)
       for index in (0...batch.size)
@@ -49,7 +72,9 @@ module Turbine
       batch.complete
     end
 
-    def busy_wait
+    def busy_wait(consumer)
+      commit_completions(consumer)
+
       # We exceeded the pool's queue, so busy-wait and retry
       # TODO: more intelligent busy-waiting strategy
       sleep BUSY_WAIT_INTERVAL

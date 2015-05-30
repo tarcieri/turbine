@@ -11,11 +11,16 @@ module Turbine
       def fetch
         batch = nil
 
-        @consumer.fetch commit: false do |_partition, messages|
-          batch = Batch.new(messages)
+        @consumer.fetch commit: false do |partition, messages|
+          batch = Batch.new(messages, partition)
         end
 
         batch
+      end
+
+      def commit(batch)
+        return if batch.messages.empty?
+        @consumer.commit batch.partition, batch.messages.last.offset + 1
       end
 
       def close

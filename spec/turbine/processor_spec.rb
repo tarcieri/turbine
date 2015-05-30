@@ -6,17 +6,19 @@ RSpec.describe Turbine::Processor do
 
   let(:example_batch_size)  { 100 }
   let(:example_elements)    { (0...example_batch_size).to_a }
+  let(:example_partition)   { 0 }
   let(:example_batch_count) { 1000 }
 
   let(:example_batches) do
     Array.new(example_batch_count).fill do
-      Turbine::Batch.new(example_elements)
+      Turbine::Batch.new(example_elements, example_partition)
     end
   end
 
   let(:mock_consumer) do
     double(:consumer).tap do |consumer|
       allow(consumer).to receive(:fetch).and_return(*example_batches, nil)
+      allow(consumer).to receive(:commit)
     end
   end
 

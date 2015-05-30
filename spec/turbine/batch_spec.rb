@@ -3,7 +3,8 @@ require "spec_helper"
 RSpec.describe Turbine::Batch do
   let(:example_batch_size) { 13 }
   let(:example_elements)   { (0...13).to_a }
-  let(:example_batch)      { described_class.new(example_elements) }
+  let(:example_partition)  { 0 }
+  let(:example_batch)      { described_class.new(example_elements, example_partition) }
 
   it "creates batches from arrays" do
     example_elements.size.times do |n|
@@ -13,6 +14,10 @@ RSpec.describe Turbine::Batch do
 
   it "knows its size" do
     expect(example_batch.size).to eq example_batch_size
+  end
+
+  it "knows its partition" do
+    expect(example_batch.partition).to eq example_partition
   end
 
   it "begins incomplete" do

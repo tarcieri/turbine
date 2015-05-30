@@ -1,8 +1,11 @@
 module Turbine
   # Batches of messages to be processed
   class Batch
-    def initialize(elements)
-      @batch     = elements.freeze
+    attr_reader :messages, :partition
+
+    def initialize(messages, partition)
+      @messages  = messages.freeze
+      @partition = partition
       @completed = Concurrent::AtomicBoolean.new
     end
 
@@ -15,11 +18,11 @@ module Turbine
     end
 
     def [](n)
-      @batch.at(n)
+      @messages.at(n)
     end
 
     def size
-      @batch.size
+      @messages.size
     end
   end
 end
