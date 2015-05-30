@@ -1,5 +1,6 @@
 ![Turbine](https://raw.githubusercontent.com/tarcieri/turbine/master/turbine.png)
 =======
+[![Gem Version](https://badge.fury.io/rb/turbine.svg)](http://rubygems.org/gems/turbine)
 [![Build Status](https://travis-ci.org/tarcieri/turbine.svg)](https://travis-ci.org/tarcieri/turbine)
 [![Code Climate](https://codeclimate.com/github/tarcieri/turbine/badges/gpa.svg)](https://codeclimate.com/github/tarcieri/turbine)
 [![Coverage Status](https://coveralls.io/repos/tarcieri/turbine/badge.svg)](https://coveralls.io/r/tarcieri/turbine)
