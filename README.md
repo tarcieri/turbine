@@ -21,6 +21,14 @@ Add this line to your application's Gemfile:
 gem "turbine"
 ```
 
+**NOTE:**: Turbine relies on an unreleased version (0.3.0) of poseidon_cluster,
+so you will also need to add the following to your Gemfile to use the version
+off of GitHub:
+
+```
+gem "poseidon_cluster", github: "bsm/poseidon_cluster"
+```
+
 And then execute:
 
     $ bundle

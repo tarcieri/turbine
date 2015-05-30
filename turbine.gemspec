@@ -20,7 +20,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "zk"
-  spec.add_runtime_dependency "poseidon_cluster"
+  spec.add_runtime_dependency "poseidon", ">= 0.0.5"
+  spec.add_runtime_dependency "poseidon_cluster", ">= 0.3.0"
   spec.add_runtime_dependency "concurrent-ruby"
 
   spec.add_development_dependency "bundler", "~> 1.9"
