@@ -5,6 +5,7 @@ module Turbine
     BUSY_WAIT_INTERVAL = 0.0001
 
     def initialize(*args)
+      @running = Concurrent::AtomicBoolean.new
       @pool = Concurrent::ThreadPoolExecutor.new(*args)
       @completed_count = Concurrent::AtomicFixnum.new
       @pending = []
@@ -14,7 +15,8 @@ module Turbine
       fail ArgumentError, "no block given" unless block
       processor_method = method(:process_batch)
 
-      while (batch = consumer.fetch)
+      @running.value = true
+      while @running.value && (batch = consumer.fetch)
         enqueue_batch(batch)
 
         begin
@@ -28,13 +30,22 @@ module Turbine
       end
     end
 
+    def stop
+      @running.value = false
+    end
+
     def drain(timeout = nil)
+      stop
       @pool.shutdown
       @pool.wait_for_termination(timeout)
     end
 
     def completed_count
       @completed_count.value
+    end
+
+    def running?
+      @running.value
     end
 
     private
