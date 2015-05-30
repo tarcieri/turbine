@@ -15,17 +15,14 @@ from a job queue by design. Turbine is designed to be small, simple, and fast.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem "turbine"
-```
+Add these lines to your application's Gemfile:
 
 **NOTE:**: Turbine relies on an unreleased version (0.3.0) of poseidon_cluster,
 so you will also need to add the following to your Gemfile to use the version
 off of GitHub:
 
-```
+```ruby
+gem "turbine"
 gem "poseidon_cluster", github: "bsm/poseidon_cluster"
 ```
 
