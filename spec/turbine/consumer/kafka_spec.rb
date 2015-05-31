@@ -1,6 +1,6 @@
 require "spec_helper"
 require "turbine/consumer/kafka"
-require "turbine/rspec/kafka_helper"
+require "turbine/kafka_helper"
 require "benchmark"
 
 RSpec.describe Turbine::Consumer::Kafka do
@@ -27,12 +27,12 @@ RSpec.describe Turbine::Consumer::Kafka do
     timestamp = Time.now.strftime("%Y%m%d%H%M%S%L")
 
     @example_topic = "turbike-kafka-specs-#{timestamp}"
-    KafkaHelper.create_topic(@example_topic)
-    KafkaHelper.fill_topic(@example_topic, MESSAGE_COUNT)
+    Turbine::KafkaHelper.create_topic(@example_topic)
+    Turbine::KafkaHelper.fill_topic(@example_topic, MESSAGE_COUNT)
   end
 
   after :all do
-    KafkaHelper.delete_topic(@example_topic)
+    Turbine::KafkaHelper.delete_topic(@example_topic)
   end
 
   it "fetches batches of messages" do
