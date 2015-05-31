@@ -75,7 +75,7 @@ module Turbine
 
     def process_batch(batch, block)
       for index in (0...batch.size)
-        msg = batch[index]
+        msg = batch[index].value
 
         begin
           block.call(msg)

@@ -6,10 +6,15 @@ RSpec.describe Turbine::Processor do
   QUEUE_SIZE       = 100
 
   let(:example_batch_size)    { 100 }
-  let(:example_elements)      { (0...example_batch_size).to_a }
   let(:example_partition)     { 0 }
   let(:example_batch_count)   { 1000 }
   let(:example_message_count) { example_batch_size * example_batch_count }
+
+  let(:example_elements) do
+    example_batch_size.times.map do |n|
+      double(:message, value: n)
+    end
+  end
 
   let(:example_batches) do
     Array.new(example_batch_count).fill do
