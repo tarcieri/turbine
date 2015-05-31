@@ -9,9 +9,7 @@ module Turbine
       @pool = Concurrent::ThreadPoolExecutor.new(*args)
       @completed_count = Concurrent::AtomicFixnum.new
       @pending = []
-      @error_handler = proc do |ex|
-        STDERR.puts "*** Error processing message: #{ex.class} #{ex}\n#{ex.backtrace.join("\n")}"
-      end
+      @error_handler = method(:default_error_handler)
     end
 
     def process(consumer, &block)
@@ -91,12 +89,15 @@ module Turbine
       batch.complete
     end
 
+    # We exceeded the pool's queue, so busy-wait and retry
+    # TODO: more intelligent busy-waiting strategy
     def busy_wait(consumer)
       commit_completions(consumer)
-
-      # We exceeded the pool's queue, so busy-wait and retry
-      # TODO: more intelligent busy-waiting strategy
       sleep BUSY_WAIT_INTERVAL
+    end
+
+    def default_error_handler(ex, _msg)
+      STDERR.puts "*** Error processing message: #{ex.class} #{ex}\n#{ex.backtrace.join("\n")}"
     end
   end
 end
