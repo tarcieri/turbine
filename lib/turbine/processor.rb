@@ -2,7 +2,8 @@ module Turbine
   # Multithreaded message processor
   class Processor
     # How long to sleep when busy waiting for the queue to empty
-    BUSY_WAIT_INTERVAL = 0.0001
+    BUSY_WAIT_INTERVAL    = 0.0001
+    DEFAULT_DRAIN_TIMEOUT = 10
 
     def initialize(*args)
       @running = Concurrent::AtomicBoolean.new
@@ -15,8 +16,8 @@ module Turbine
     def process(consumer, &block)
       fail ArgumentError, "no block given" unless block
       processor_method = method(:process_batch)
-
       @running.value = true
+
       while @running.value && (batch = consumer.fetch)
         enqueue_batch(batch)
 
@@ -29,6 +30,9 @@ module Turbine
 
         commit_completions(consumer)
       end
+    ensure
+      drain(DEFAULT_DRAIN_TIMEOUT)
+      commit_completions(consumer)
     end
 
     def stop

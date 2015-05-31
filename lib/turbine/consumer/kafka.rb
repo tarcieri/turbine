@@ -11,8 +11,12 @@ module Turbine
       def fetch
         batch = nil
 
-        @consumer.fetch commit: false do |partition, messages|
-          batch = Batch.new(messages, partition)
+        begin
+          @consumer.fetch commit: false do |partition, messages|
+            batch = Batch.new(messages, partition)
+          end
+        rescue Poseidon::Connection::ConnectionFailedError => ex
+          raise ConnectionError, ex.to_s
         end
 
         batch
