@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["bascule@gmail.com"]
 
   spec.summary       = "Fault-tolerant multithreaded stream processing for Ruby"
-  spec.description   = "Turbine is a performance-oriented stream processor built on Zookeeper"
+  spec.description   = "Performance-oriented stream processing built on Kafka and Zookeeper"
   spec.homepage      = "https://github.com/tarcieri/turbine"
   spec.license       = "MIT"
 
