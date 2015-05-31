@@ -7,7 +7,7 @@
 
 Fault-tolerant multithreaded stream processing for Ruby.
 
-Turbine is a perforance-oriented stream processing library built on Zookeeper.
+Turbine is a performance-oriented stream processing library built on Zookeeper.
 It presently supports Kafka as a message queue, but is designed to be pluggable
 in order to potentially support other message queues in the future.
 
