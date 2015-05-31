@@ -3,7 +3,8 @@ install: gem install bundler
 script: "bundle && bundle exec rake ci"
 
 env:
-  - JRUBY_OPTS="--server -J-Xms1500m -J-Xmx1500m -J-XX:+UseConcMarkSweepGC -J-XX:-UseGCOverheadLimit -J-XX:+CMSClassUnloadingEnabled"
+  global:
+    - JRUBY_OPTS="--server -J-Xms1500m -J-Xmx1500m -J-XX:+UseConcMarkSweepGC -J-XX:-UseGCOverheadLimit -J-XX:+CMSClassUnloadingEnabled"
 
 rvm:
   - 2.2.2
