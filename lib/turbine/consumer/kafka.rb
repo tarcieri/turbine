@@ -16,7 +16,7 @@ module Turbine
             batch = Batch.new(messages, partition)
           end
         rescue Poseidon::Connection::ConnectionFailedError => ex
-          raise ConnectionError, ex.to_s
+          raise ConnectionError, ex.to_s, ex.backtrace
         end
 
         batch
