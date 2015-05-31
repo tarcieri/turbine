@@ -34,6 +34,12 @@ Or install it yourself as:
 
     $ gem install turbine
 
+## Getting Started
+
+Please see the [Quickstart](https://github.com/tarcieri/turbine/wiki/Quickstart)
+on the Wiki for a quick tutorial on writing your first stream processing job
+using Turbine.
+
 ## Usage
 
 Turbine presently supports stream processing from the Kafka message queue
@@ -60,7 +66,7 @@ processor.process(consumer) do |msg|
 end
 ```
 
-## Error handling
+## Error Handling
 
 By default, Turbine prints exceptions that occur during message processing to STDERR.
 Chances are, you'd probably rather log them to an exception logging service.
