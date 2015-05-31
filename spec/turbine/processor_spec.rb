@@ -49,7 +49,7 @@ RSpec.describe Turbine::Processor do
 
   it "tolerates processing errors gracefully" do
     # Check the default handler is printing to STDERR
-    expect(STDERR).to receive(:puts).exactly(example_message_count).times
+    expect(STDERR).to receive(:puts).at_most(example_message_count).times
 
     example_processor.process(mock_consumer) do |_msg, _ex|
       fail "uhoh!"
