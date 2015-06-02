@@ -18,12 +18,8 @@ from a job queue by design. Turbine is designed to be small, simple, and fast.
 
 Add these lines to your application's Gemfile:
 
-**NOTE:** Turbine relies on an unreleased version (0.3.0) of poseidon_cluster,
-so you will also need to use the version off of GitHub for now.
-
 ```ruby
 gem "turbine"
-gem "poseidon_cluster", github: "bsm/poseidon_cluster"
 ```
 
 And then execute:
