@@ -8,7 +8,7 @@ env:
 
 rvm:
   - 2.2.2
-  - jruby
+  - jruby-9.0.0.0
   - jruby-head
   - rbx-2
 
